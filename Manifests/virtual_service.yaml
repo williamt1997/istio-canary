@@ -1,0 +1,28 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: istio-virtual-service
+  namespace: canary-test
+spec:
+  gateways:
+    - http-gateway
+  hosts:
+    - "*"
+  http:
+  - match:
+    - uri:
+        prefix: "/hello"
+    route:
+    - destination:
+        host: hello-app
+        port:
+          number: 8080
+        subset: v1
+      weight: 80
+    - destination:
+        host: hello-app
+        port:
+          number: 8080
+        subset: v2
+      weight: 20
+
